@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#315f5a" />
+  <title>Lil Lofty｜影片配音測試</title>
+  <style>
+    :root{--bg:#f4f0e9;--card:#fffdf9;--text:#282522;--muted:#706b64;--line:#ded7ce;--primary:#315f5a;--soft:#e1eeeb;--danger:#9c4747;--radius:20px;--shadow:0 14px 36px rgba(60,45,30,.08)}
+    *{box-sizing:border-box}body{margin:0;color:var(--text);background:linear-gradient(180deg,#faf7f1 0%,var(--bg) 100%);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.6}.wrap{max-width:760px;margin:0 auto;padding:18px 15px 70px}header{padding:12px 4px 6px}h1{font-size:28px;line-height:1.2;margin:0 0 8px}.sub,.note{color:var(--muted)}.sub{font-size:15px}.note{font-size:13px;margin-top:8px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin:14px 0}label{display:block;font-weight:700;margin:14px 0 7px}input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;color:var(--text);border-radius:14px;padding:13px 14px;font-size:16px;outline:none}textarea{min-height:150px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--soft)}video{width:100%;max-height:520px;border-radius:16px;background:#111;display:none;margin-top:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.range-row{display:grid;grid-template-columns:1fr 62px;gap:10px;align-items:center}.value{text-align:center;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:700}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}button{border:0;border-radius:14px;padding:13px 15px;font-size:16px;font-weight:700;background:var(--primary);color:#fff;cursor:pointer}button.secondary{background:var(--soft);color:var(--primary)}button.ghost{background:#ece8e1;color:var(--text)}button.danger{background:#f1dfdf;color:var(--danger)}.status{min-height:24px;margin-top:10px;font-size:14px;color:var(--primary)}.summary{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14px;margin-top:12px}@media(max-width:560px){.grid,.actions{grid-template-columns:1fr}h1{font-size:26px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Lil Lofty｜影片配音測試</h1><div class="sub">選擇影片、輸入文字，測試影片與配音一起播放。</div></header>
+  <section class="card">
+    <label for="videoFile">1. 選擇影片</label>
+    <input id="videoFile" type="file" accept="video/*" />
+    <video id="video" controls playsinline></video>
+    <div id="videoInfo" class="summary">尚未選擇影片。</div>
+  </section>
+  <section class="card">
+    <label for="script">2. 配音文字</label>
+    <textarea id="script" placeholder="例如：這次幫客人整理漂後髮的毛躁與髮流，完成後保留自然感，也讓日常整理更輕鬆。"></textarea>
+    <div class="grid">
+      <div><label for="voice">3. 聲音</label><select id="voice"><option value="">正在讀取裝置聲音…</option></select></div>
+      <div><label for="startDelay">配音開始時間</label><select id="startDelay"><option value="0">影片開始時</option><option value="1">1 秒後</option><option value="2">2 秒後</option><option value="3">3 秒後</option><option value="5">5 秒後</option></select></div>
+    </div>
+    <label for="rate">語速</label><div class="range-row"><input id="rate" type="range" min="0.6" max="1.5" step="0.1" value="1" /><div id="rateValue" class="value">1.0</div></div>
+    <label for="pitch">音調</label><div class="range-row"><input id="pitch" type="range" min="0.7" max="1.3" step="0.1" value="1" /><div id="pitchValue" class="value">1.0</div></div>
+    <label for="videoVolume">原影片音量</label><select id="videoVolume"><option value="0">靜音</option><option value="0.2">20%</option><option value="0.5">50%</option><option value="1">100%</option></select>
+    <div class="actions"><button id="previewVoice">只試聽配音</button><button id="playTogether" class="secondary">影片＋配音播放</button><button id="stopAll" class="ghost">停止</button><button id="reset" class="danger">清除測試</button></div>
+    <div id="status" class="status"></div>
+    <div class="note">此測試版使用裝置內建語音，只能播放與試聽，尚不能輸出音訊檔或合成新影片。</div>
+  </section>
+</div>
+<script>
+const videoFile=document.getElementById('videoFile'),video=document.getElementById('video'),videoInfo=document.getElementById('videoInfo'),script=document.getElementById('script'),voiceSelect=document.getElementById('voice'),rate=document.getElementById('rate'),pitch=document.getElementById('pitch'),rateValue=document.getElementById('rateValue'),pitchValue=document.getElementById('pitchValue'),startDelay=document.getElementById('startDelay'),videoVolume=document.getElementById('videoVolume'),statusBox=document.getElementById('status');
+let objectUrl=null,voices=[],timer=null;
+function setStatus(m){statusBox.textContent=m}function formatTime(s){if(!Number.isFinite(s))return'未知';const m=Math.floor(s/60),sec=Math.round(s%60).toString().padStart(2,'0');return`${m}:${sec}`}
+function loadVoices(){voices=window.speechSynthesis?speechSynthesis.getVoices():[];voiceSelect.innerHTML='';if(!voices.length){voiceSelect.innerHTML='<option value="">未偵測到可用聲音</option>';return}const zh=voices.filter(v=>/zh|Chinese|Mandarin/i.test(`${v.lang} ${v.name}`)),ordered=zh.length?[...zh,...voices.filter(v=>!zh.includes(v))]:voices;ordered.forEach(v=>{const o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=`${v.name}｜${v.lang}${v.default?'｜預設':''}`;voiceSelect.appendChild(o)})}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}else voiceSelect.innerHTML='<option>此瀏覽器不支援語音朗讀</option>';
+videoFile.addEventListener('change',()=>{const f=videoFile.files?.[0];if(!f)return;if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(f);video.src=objectUrl;video.style.display='block';video.onloadedmetadata=()=>{videoInfo.textContent=`檔名：${f.name}\n長度：${formatTime(video.duration)}\n大小：${(f.size/1024/1024).toFixed(1)} MB`;setStatus('影片已載入，可以開始測試。')}});
+rate.addEventListener('input',()=>rateValue.textContent=Number(rate.value).toFixed(1));pitch.addEventListener('input',()=>pitchValue.textContent=Number(pitch.value).toFixed(1));videoVolume.addEventListener('change',()=>video.volume=Number(videoVolume.value));
+function createUtterance(){const text=script.value.trim();if(!text){setStatus('請先輸入配音文字。');return null}const u=new SpeechSynthesisUtterance(text),i=Number(voiceSelect.value);if(voices[i]){u.voice=voices[i];u.lang=voices[i].lang||'zh-TW'}else u.lang='zh-TW';u.rate=Number(rate.value);u.pitch=Number(pitch.value);u.volume=1;u.onstart=()=>setStatus('正在播放配音。');u.onend=()=>setStatus('配音播放完成。');u.onerror=e=>setStatus(`配音播放失敗：${e.error||'未知錯誤'}`);return u}
+document.getElementById('previewVoice').addEventListener('click',()=>{if(!('speechSynthesis'in window)){setStatus('此瀏覽器不支援語音朗讀。');return}clearTimeout(timer);speechSynthesis.cancel();const u=createUtterance();if(u)speechSynthesis.speak(u)});
+document.getElementById('playTogether').addEventListener('click',async()=>{if(!video.src){setStatus('請先選擇影片。');return}if(!('speechSynthesis'in window)){setStatus('此瀏覽器不支援語音朗讀。');return}clearTimeout(timer);speechSynthesis.cancel();video.pause();video.currentTime=0;video.volume=Number(videoVolume.value);const u=createUtterance();if(!u)return;try{await video.play();const d=Number(startDelay.value)*1000;timer=setTimeout(()=>speechSynthesis.speak(u),d);setStatus(`影片已播放，配音將於 ${Number(startDelay.value)} 秒後開始。`)}catch(e){setStatus('影片無法播放，請再次點擊播放按鈕。')}});
+document.getElementById('stopAll').addEventListener('click',()=>{clearTimeout(timer);speechSynthesis.cancel();video.pause();setStatus('已停止影片與配音。')});
+document.getElementById('reset').addEventListener('click',()=>{clearTimeout(timer);speechSynthesis.cancel();video.pause();video.removeAttribute('src');video.load();video.style.display='none';videoFile.value='';script.value='';videoInfo.textContent='尚未選擇影片。';rate.value='1';pitch.value='1';rateValue.textContent='1.0';pitchValue.textContent='1.0';startDelay.value='0';videoVolume.value='0';if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}setStatus('已清除測試內容。')});
+</script>
+</body>
+</html>
