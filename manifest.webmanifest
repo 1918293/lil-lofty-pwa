@@ -1,0 +1,26 @@
+{
+  "name": "Lil Lofty",
+  "short_name": "Lil Lofty",
+  "description": "Lil Lofty v86 執行穩定修復版",
+  "lang": "zh-Hant-TW",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4eee7",
+  "theme_color": "#5d7e74",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
