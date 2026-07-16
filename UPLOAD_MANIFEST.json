@@ -1,0 +1,58 @@
+{
+  "repository": "1918293/lil-lofty-pwa",
+  "suggested_branch": "chore/organize-v62-pwa",
+  "commit_message": "chore: organize v62 PWA release",
+  "replace_root_index": false,
+  "files": [
+    {
+      "path": ".github/ISSUE_TEMPLATE/device-test.md",
+      "size_bytes": 350,
+      "sha256": "64f2599754dbc28b77d390f46eaf12cd40f391ef8d2c81938583e0d5e8bbf4f2"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "size_bytes": 315,
+      "sha256": "18da3e2a12f0e23d975c5b9f2ddd88627b3cd8698edae670c9df58a417821f99"
+    },
+    {
+      "path": "GITHUB_UPLOAD_GUIDE.md",
+      "size_bytes": 472,
+      "sha256": "e8083f396d2108be082d43af1b62f2bdfeee0fae5adcf2b396c2bdc48444f897"
+    },
+    {
+      "path": "README_V62_PROPOSED.md",
+      "size_bytes": 296,
+      "sha256": "fc087dbadebee2da408407a51351c6b20d63d31f69e44ce8f593df19fd06e13f"
+    },
+    {
+      "path": "checks/v62/static-test-report.json",
+      "size_bytes": 854,
+      "sha256": "7f285976be0dab61dfcffa95d34ce52b8b6904540ccd48ae971635c0dfccb219"
+    },
+    {
+      "path": "docs/DEPLOY_V62.md",
+      "size_bytes": 254,
+      "sha256": "95f8cdffe9fffc1b6761f342896970be8f974f322254bdf3f727fe4a9825f3bc"
+    },
+    {
+      "path": "docs/PROJECT_STRUCTURE.md",
+      "size_bytes": 418,
+      "sha256": "fccdf45720204fbabf79bb3b7eb6f63b9fa7a665b94018f3befebfc3adfaeeb5"
+    },
+    {
+      "path": "docs/TESTING_CHECKLIST.md",
+      "size_bytes": 402,
+      "sha256": "0f4575dcd4dbf8cbdba8cea6b5dad60e56d22ecf63433037f1f8776607fd99ed"
+    },
+    {
+      "path": "docs/VERSION_HISTORY.md",
+      "size_bytes": 403,
+      "sha256": "d5a2b4bfacfae3911a5c3e3eda84aa450fdefa2039a91f9099efe0ecb0136132"
+    },
+    {
+      "path": "releases/v62/index.html",
+      "size_bytes": 492379,
+      "sha256": "16448617b0836273e0ae7befbdc48d4d31cc3f356ec61f0a129af8deaab75b9b"
+    }
+  ]
+}

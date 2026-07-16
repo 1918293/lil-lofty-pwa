@@ -1,0 +1,38 @@
+{
+  "standalone_html": "/mnt/data/lil_lofty_v62_multi_project_library.html",
+  "package_zip": "/mnt/data/lil_lofty_v62_pwa_package.zip",
+  "syntax": [
+    {
+      "script": 1,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "script": 2,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "service_worker_syntax": {
+    "ok": true,
+    "error": ""
+  },
+  "duplicate_ids": [],
+  "checks": {
+    "library_panel": true,
+    "new_project": true,
+    "save_project": true,
+    "active_name": true,
+    "project_index_storage": true,
+    "project_specific_video_key": true,
+    "switch_project": true,
+    "duplicate_project": true,
+    "archive_project": true,
+    "delete_project": true,
+    "video_restore": true,
+    "release_package_project_name": true,
+    "pwa_package_created": true,
+    "no_duplicate_ids": true,
+    "all_js_syntax_ok": true
+  }
+}
